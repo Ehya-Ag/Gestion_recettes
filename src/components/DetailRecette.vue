@@ -1,3 +1,3 @@
 <template>
-  <h1>Ajouter recette</h1>
+  <h1>details recette</h1>
 </template>
