@@ -23,5 +23,11 @@ export const useRecipeStore = defineStore('recipe', () => {
     }
   ])
 
-  return { recipes }
+  const ajoutRecette = (recipe) => {
+    const maxId = recipes.value.reduce((max, r) => (r.id > max ? r.id : max), 0)
+    const newId = maxId + 1
+    recipes.value.push({ id: newId, ...recipe })
+  }
+
+  return { recipes, ajoutRecette }
 })

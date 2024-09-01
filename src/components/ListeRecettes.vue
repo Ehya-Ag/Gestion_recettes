@@ -1,5 +1,9 @@
 <template>
-  <h1>Liste recette</h1>
+  <h1>Liste des recettes</h1>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Liste des recettes</h1>
+    <button @click="ajouter" class="btn btn-primary">Ajouter une recette</button>
+  </div>
   <table class="table table-striped">
     <thead>
       <tr>
@@ -18,10 +22,17 @@
     </tbody>
   </table>
 </template>
+
 <script setup>
 import { ref } from 'vue'
 import { useRecipeStore } from '../stores/gestion'
+import { useRouter } from 'vue-router'
 
 const store = useRecipeStore()
 const recipes = store.recipes
+
+const router = useRouter()
+const ajouter = () => {
+  router.push('/ajout')
+}
 </script>
