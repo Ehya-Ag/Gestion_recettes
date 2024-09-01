@@ -1,4 +1,8 @@
 <template>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  />
   <div class="background-container">
     <div class="container py-5 d-flex justify-content-center align-items-center min-vh-100">
       <div class="card large-card text-center">
