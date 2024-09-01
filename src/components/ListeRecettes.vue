@@ -24,8 +24,14 @@
             <td>{{ recipe.type }}</td>
             <td>{{ recipe.ingredients }}</td>
             <td class="text-end">
-              <button class="btn btn-info btn-sm me-2">
+              <button
+                @click="openModal(recipe)"
+                class="btn btn-info btn-sm me-2"
+                data-bs-toggle="modal"
+                data-bs-target="#recipeModal"
+              >
                 <i class="fas fa-eye"></i>
+                Détails
               </button>
               <router-link :to="`/edit/${recipe.id}`" class="btn btn-warning btn-sm me-2"
                 ><i class="fas fa-edit"></i
@@ -41,6 +47,34 @@
     <div v-else>
       <p>Aucune recette disponible.</p>
     </div>
+    <div
+      class="modal fade"
+      id="recipeModal"
+      tabindex="-1"
+      aria-labelledby="recipeModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="recipeModalLabel">{{ selectedRecipe?.titre }}</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p><strong>Type :</strong> {{ selectedRecipe?.type }}</p>
+            <p><strong>Ingrédients :</strong> {{ selectedRecipe?.ingredients }}</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -51,6 +85,7 @@ import { useRouter } from 'vue-router'
 
 const store = useRecipeStore()
 const recipes = store.recipes
+const selectedRecipe = ref(null)
 
 const router = useRouter()
 const ajouter = () => {
@@ -64,6 +99,9 @@ const confirmDelete = (id) => {
 
 const deleteRecipe = (id) => {
   store.deleteRecipe(id)
+}
+const openModal = (recipe) => {
+  selectedRecipe.value = recipe
 }
 </script>
 
