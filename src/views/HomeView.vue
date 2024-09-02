@@ -138,7 +138,7 @@
       </form>
     </div>
     <footer class="footer bg-primary text-white text-center py-3">
-      <p>&copy; 2024 Restaurant Gourmet. Tous droits réservés.</p>
+      <p>&copy; 2024 Restaurant Simplonien. Tous droits réservés.</p>
     </footer>
   </div>
 </template>
