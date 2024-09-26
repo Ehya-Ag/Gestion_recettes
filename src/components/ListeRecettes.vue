@@ -6,17 +6,17 @@
   <div class="background-container py-5">
     <div class="container">
       <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="text-primary">Liste des Recettes</h1>
-        <button @click="ajouter" class="btn btn-primary">Ajouter une recette</button>
+        <h1 class="text-primary">{{ $t('RecipeList') }}</h1>
+        <button @click="ajouter" class="btn btn-primary">{{ $t('AddRecipe') }}</button>
       </div>
       <div v-if="recipes.length">
         <table class="table table-striped table-bordered table-hover">
           <thead class="table-dark">
             <tr>
-              <th scope="col">Titre</th>
-              <th scope="col">Type</th>
-              <th scope="col">Ingrédients</th>
-              <th scope="col" class="text-end">Actions</th>
+              <th scope="col">{{ $t('title') }}</th>
+              <th scope="col">{{ $t('type') }}</th>
+              <th scope="col">{{ $t('ingredients') }}</th>
+              <th scope="col" class="text-end">{{ $t('actions') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -45,7 +45,7 @@
         </table>
       </div>
       <div v-else>
-        <p>Aucune recette disponible.</p>
+        <p>{{ $t('noRecipes') }}</p>
       </div>
       <div
         class="modal fade"
@@ -66,12 +66,12 @@
               ></button>
             </div>
             <div class="modal-body">
-              <p><strong>Type :</strong> {{ selectedRecipe?.type }}</p>
-              <p><strong>Ingrédients :</strong> {{ selectedRecipe?.ingredients }}</p>
+              <p><strong>{{ $t('type') }} :</strong> {{ selectedRecipe?.type }}</p>
+              <p><strong>{{ $t('ingredients') }} :</strong> {{ selectedRecipe?.ingredients }}</p>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                Fermer
+                {{ $t('close') }}
               </button>
             </div>
           </div>
@@ -82,31 +82,31 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useRecipeStore } from '../stores/gestion'
-import { useRouter } from 'vue-router'
+import { ref } from 'vue';
+import { useRecipeStore } from '../stores/gestion';
+import { useRouter } from 'vue-router';
 
-const store = useRecipeStore()
-const recipes = store.recipes
-const selectedRecipe = ref(null)
+const store = useRecipeStore();
+const recipes = store.recipes;
+const selectedRecipe = ref(null);
+const router = useRouter();
 
-const router = useRouter()
 const ajouter = () => {
-  router.push('/ajout')
-}
+  router.push('/ajout');
+};
 
 const confirmDelete = (id) => {
   if (confirm('Êtes-vous sûr de vouloir supprimer cette recette ?')) {
-    deleteRecipe(id)
+    deleteRecipe(id);
   }
-}
+};
 
 const deleteRecipe = (id) => {
-  store.deleteRecipe(id)
-}
+  store.deleteRecipe(id);
+};
 const openModal = (recipe) => {
-  selectedRecipe.value = recipe
-}
+  selectedRecipe.value = recipe;
+};
 </script>
 
 <style scoped>

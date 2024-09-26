@@ -1,8 +1,4 @@
 <template>
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-  />
   <div class="background-container">
     <div class="container py-5 d-flex justify-content-center align-items-center min-vh-100">
       <div class="card large-card text-center">
@@ -12,19 +8,16 @@
           alt="Notre restaurant"
         />
         <div class="card-body">
-          <h2 class="card-title">Bienvenue au Restaurant Simplonien</h2>
-          <p class="card-text">
-            Découvrez une cuisine raffinée et authentique dans un cadre chaleureux et convivial.
-            Notre chef met tout son savoir-faire au service de votre palais avec des recettes
-            traditionnelles revisitées. Venez savourer nos plats préparés avec des ingrédients frais
-            et de qualité.
-          </p>
-          <router-link to="/liste" class="btn btn-primary">Voir nos recettes</router-link>
+          <h2 class="card-title">{{ $t('welcome') }}</h2>
+          <p class="card-text">{{ $t('description') }}</p>
+          <router-link to="/liste" class="btn btn-primary">{{ $t('viewRecipes') }}</router-link>
         </div>
       </div>
     </div>
+
+    <!-- Section Chefs -->
     <div class="container py-5">
-      <h3 class="text-center mb-4 text-primary">Nos Cuisiniers</h3>
+      <h3 class="text-center mb-4 text-primary">{{ $t('ourChefs') }}</h3>
       <div class="row justify-content-center">
         <div class="col-md-3 text-center">
           <div class="chef-card">
@@ -33,7 +26,7 @@
               class="chef-img"
               alt="Chef Jean Dupont"
             />
-            <h5 class="mt-3 text-warning">Jean Dupont</h5>
+            <h5 class="mt-3 text-warning">{{ $t('chefName1') }}</h5>
           </div>
         </div>
         <div class="col-md-3 text-center">
@@ -43,7 +36,7 @@
               class="chef-img"
               alt="Chef Marie Curie"
             />
-            <h5 class="mt-3 text-warning">Marie Curie</h5>
+            <h5 class="mt-3 text-warning">{{ $t('chefName2') }}</h5>
           </div>
         </div>
         <div class="col-md-3 text-center">
@@ -53,22 +46,21 @@
               class="chef-img"
               alt="Chef Pierre Legrand"
             />
-            <h5 class="mt-3 text-warning">Pierre Legrand</h5>
+            <h5 class="mt-3 text-warning">{{ $t('chefName3') }}</h5>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- Section Témoignages -->
     <div class="container py-5">
-      <h3 class="text-center mb-4 text-primary">Témoignages de nos Clients</h3>
+      <h3 class="text-center mb-4 text-primary">{{ $t('testimonials') }}</h3>
       <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
           <div class="carousel-item active">
             <div class="d-flex justify-content-center">
               <div class="testimonial-card">
-                <p class="text-secondary">
-                  "Un service exceptionnel et des plats délicieux. Je reviendrai sans hésiter!"
-                </p>
+                <p class="text-secondary">{{ $t('testimonial1') }}</p>
                 <h6 class="mt-3 text-warning">- Clara B.</h6>
               </div>
             </div>
@@ -76,9 +68,7 @@
           <div class="carousel-item">
             <div class="d-flex justify-content-center">
               <div class="testimonial-card">
-                <p class="text-secondary">
-                  "Le meilleur restaurant en ville. L'ambiance est fantastique."
-                </p>
+                <p class="text-secondary">{{ $t('testimonial2') }}</p>
                 <h6 class="mt-3 text-warning">- Marc D.</h6>
               </div>
             </div>
@@ -86,62 +76,41 @@
           <div class="carousel-item">
             <div class="d-flex justify-content-center">
               <div class="testimonial-card">
-                <p class="text-secondary">
-                  "Une expérience culinaire inoubliable. Bravo à toute l'équipe!"
-                </p>
+                <p class="text-secondary">{{ $t('testimonial3') }}</p>
                 <h6 class="mt-3 text-warning">- Sophie L.</h6>
               </div>
             </div>
           </div>
         </div>
-        <button
-          class="carousel-control-prev"
-          type="button"
-          data-bs-target="#testimonialCarousel"
-          data-bs-slide="prev"
-        >
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button
-          class="carousel-control-next"
-          type="button"
-          data-bs-target="#testimonialCarousel"
-          data-bs-slide="next"
-        >
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
       </div>
     </div>
+
+    <!-- Section Contact -->
     <div class="container py-5">
-      <h3 class="text-center mb-4 text-primary">Contactez-nous</h3>
+      <h3 class="text-center mb-4 text-primary">{{ $t('contactUs') }}</h3>
       <form class="contact-form">
         <div class="mb-3">
-          <label for="name" class="form-label">Nom</label>
-          <input type="text" class="form-control" id="name" placeholder="Votre nom" />
+          <label for="name" class="form-label">{{ $t('name') }}</label>
+          <input type="text" class="form-control" id="name" placeholder="{{ $t('name') }}" />
         </div>
         <div class="mb-3">
-          <label for="email" class="form-label">Email</label>
-          <input type="email" class="form-control" id="email" placeholder="Votre email" />
+          <label for="email" class="form-label">{{ $t('email') }}</label>
+          <input type="email" class="form-control" id="email" placeholder="{{ $t('email') }}" />
         </div>
         <div class="mb-3">
-          <label for="message" class="form-label">Message</label>
-          <textarea
-            class="form-control"
-            id="message"
-            rows="4"
-            placeholder="Votre message"
-          ></textarea>
+          <label for="message" class="form-label">{{ $t('message') }}</label>
+          <textarea class="form-control" id="message" rows="4" placeholder="{{ $t('message') }}"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Envoyer</button>
+        <button type="submit" class="btn btn-primary">{{ $t('send') }}</button>
       </form>
     </div>
+
     <footer class="footer bg-primary text-white text-center py-3">
       <p>&copy; 2024 Restaurant Simplonien. Tous droits réservés.</p>
     </footer>
   </div>
 </template>
+
 
 <style scoped>
 .background-container {
