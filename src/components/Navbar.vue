@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div>
+    <div class="d-flex justify-content-end">
     <select @change="changeLanguage">
       <option value="fr">Fr</option>
       <option value="en">En</option>
