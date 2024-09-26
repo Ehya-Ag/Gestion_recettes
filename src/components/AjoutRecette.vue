@@ -6,14 +6,14 @@
   <div class="background-container py-5">
     <div class="container">
       <div class="card p-4 shadow-lg">
-        <h2 class="mb-4">{{ isEditing ? 'Modifier' : 'Ajouter' }} une recette</h2>
+<h2 class="mb-4">{{ isEditing ? $t('Edit') : $t('Add') }} {{ $t('recipe') }}</h2>
         <form @submit.prevent="submitRecipe">
           <div class="mb-3">
-            <label for="title" class="form-label">Titre</label>
+            <label for="title" class="form-label">{{ $t('recipeTitle') }}</label>
             <input v-model="recipe.titre" type="text" class="form-control" id="title" required />
           </div>
           <div class="mb-3">
-            <label for="ingredients" class="form-label">Ingrédients</label>
+            <label for="ingredients" class="form-label">{{ $t('recipeIngredients') }}</label>
             <textarea
               v-model="recipe.ingredients"
               class="form-control"
@@ -23,15 +23,15 @@
             ></textarea>
           </div>
           <div class="mb-3">
-            <label for="type" class="form-label">Type de recette</label>
+            <label for="type" class="form-label">{{ $t('recipeType') }}</label>
             <select v-model="recipe.type" class="form-select" id="type" required>
-              <option value="entrée">Entrée</option>
-              <option value="plat">Plat</option>
-              <option value="dessert">Dessert</option>
+              <option value="entrée">{{ $t('typeOptions.appetizer') }}</option>
+              <option value="plat">{{ $t('typeOptions.dish') }}</option>
+              <option value="dessert">{{ $t('typeOptions.dessert') }}</option>
             </select>
           </div>
           <button type="submit" class="btn btn-primary">
-            {{ isEditing ? 'Modifier' : 'Ajouter' }}
+            {{ isEditing ? $t('editButton') : $t('submitButton') }}
           </button>
         </form>
       </div>
@@ -40,38 +40,38 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useRecipeStore } from '../stores/gestion'
-import { useRoute, useRouter } from 'vue-router'
+import { ref } from 'vue';
+import { useRecipeStore } from '../stores/gestion';
+import { useRoute, useRouter } from 'vue-router';
 
-const store = useRecipeStore()
-const router = useRouter()
-const route = useRoute()
+const store = useRecipeStore();
+const router = useRouter();
+const route = useRoute();
 
 const recipe = ref({
   titre: '',
   ingredients: '',
   type: 'entrée'
-})
+});
 
-const isEditing = !!route.params.id
+const isEditing = !!route.params.id;
 if (isEditing) {
-  const existingRecipe = store.recipes.find((r) => r.id === parseInt(route.params.id))
+  const existingRecipe = store.recipes.find((r) => r.id === parseInt(route.params.id));
   if (existingRecipe) {
-    Object.assign(recipe.value, existingRecipe)
+    Object.assign(recipe.value, existingRecipe);
   } else {
-    router.push('/liste')
+    router.push('/liste');
   }
 }
 
 const submitRecipe = () => {
   if (isEditing) {
-    store.updateRecipe(parseInt(route.params.id), recipe.value)
+    store.updateRecipe(parseInt(route.params.id), recipe.value);
   } else {
-    store.ajoutRecette({ ...recipe.value, id: Date.now() })
+    store.ajoutRecette({ ...recipe.value, id: Date.now() });
   }
-  router.push('/liste')
-}
+  router.push('/liste');
+};
 </script>
 
 <style scoped>
@@ -79,33 +79,33 @@ const submitRecipe = () => {
   background-image: url('https://image.shutterstock.com/image-photo/blur-coffee-shop-cafe-restaurant-260nw-364151948.jpg');
   background-size: cover;
   background-position: center;
-  min-height: 100vh;
+  min-height: 100vh; /* Hauteur minimale pour occuper l'écran */
 }
 .card {
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #fff; /* Couleur de fond blanche */
+  border-radius: 10px; /* Coins arrondis */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre autour de la carte */
 }
 
 .form-label {
-  font-weight: bold;
+  font-weight: bold; /* Texte en gras pour les étiquettes */
 }
 
 .form-control,
 .form-select {
-  border-radius: 5px;
+  border-radius: 5px; /* Coins arrondis pour les champs de formulaire */
 }
 
 .btn-primary {
-  background-color: #007bff;
-  border: none;
+  background-color: #007bff; /* Couleur de fond du bouton */
+  border: none; /* Pas de bordure */
 }
 
 .btn-primary:hover {
-  background-color: #0056b3;
+  background-color: #0056b3; /* Couleur du bouton au survol */
 }
 
 textarea.form-control {
-  resize: vertical;
+  resize: vertical; /* Permet de redimensionner la zone de texte verticalement */
 }
 </style>

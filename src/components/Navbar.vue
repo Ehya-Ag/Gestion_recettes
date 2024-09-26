@@ -1,9 +1,16 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="d-flex justify-content-end">
+    <select @change="changeLanguage">
+      <option value="fr">Fr</option>
+      <option value="en">En</option>
+    </select>
+    <h1>{{ $t('home') }}</h1>
+  </div>
     <div class="container">
       <router-link to="/" class="navbar-brand d-flex align-items-center">
         <i class="fas fa-book me-2"></i>
-        <strong>Accueil</strong>
+        <strong>{{ $t('Home') }}</strong>
       </router-link>
       <button
         class="navbar-toggler"
@@ -19,13 +26,22 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <router-link to="/liste" class="nav-link" active-class="active" aria-current="page">
-              <i class="fas fa-list me-2"></i> Liste Recette
+            <router-link
+              to="/liste"
+              class="nav-link"
+              active-class="active"
+              aria-current="page"
+            >
+              <i class="fas fa-list me-2"></i> {{ $t('RecipeList') }}
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/ajout" class="nav-link" active-class="active">
-              <i class="fas fa-plus me-2"></i> Ajout des recettes
+            <router-link
+              to="/ajout"
+              class="nav-link"
+              active-class="active"
+            >
+              <i class="fas fa-plus me-2"></i> {{ $t('AddRecipe') }}
             </router-link>
           </li>
         </ul>
@@ -36,6 +52,13 @@
 
 <script setup>
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n';
+
+const { locale } = useI18n();
+
+function changeLanguage(event) {
+  locale.value = event.target.value;
+}
 </script>
 
 <style scoped>
@@ -62,7 +85,7 @@ import { useRouter } from 'vue-router'
 }
 
 .navbar-toggler-icon {
-  background-image: url('data:image/svg+xml;base64,...'); /* Icone du menu burger, peut être personnalisé avec un SVG */
+  background-image: url('data:image/svg+xml;base64,...'); /* Icône du menu burger, peut être personnalisée avec un SVG */
 }
 
 .navbar-nav .nav-item .nav-link:hover {
