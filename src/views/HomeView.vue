@@ -91,15 +91,15 @@
       <form class="contact-form">
         <div class="mb-3">
           <label for="name" class="form-label">{{ $t('name') }}</label>
-          <input type="text" class="form-control" id="name" placeholder="{{ $t('name') }}" />
+          <input type="text" class="form-control" id="name" :placeholder="$t('name')" />
         </div>
         <div class="mb-3">
           <label for="email" class="form-label">{{ $t('email') }}</label>
-          <input type="email" class="form-control" id="email" placeholder="{{ $t('email') }}" />
+          <input type="email" class="form-control" id="email" :placeholder="$t('email')" />
         </div>
         <div class="mb-3">
           <label for="message" class="form-label">{{ $t('message') }}</label>
-          <textarea class="form-control" id="message" rows="4" placeholder="{{ $t('message') }}"></textarea>
+          <textarea class="form-control" id="message" rows="4" :placeholder="$t('message')"></textarea>
         </div>
         <button type="submit" class="btn btn-primary">{{ $t('send') }}</button>
       </form>

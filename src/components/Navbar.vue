@@ -2,8 +2,8 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div>
     <select @change="changeLanguage">
-      <option value="fr">Français</option>
-      <option value="en">English</option>
+      <option value="fr">Fr</option>
+      <option value="en">En</option>
     </select>
     <h1>{{ $t('home') }}</h1>
   </div>

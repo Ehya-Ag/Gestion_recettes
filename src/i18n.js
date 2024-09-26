@@ -33,7 +33,7 @@ const messages = {
     },
     submitButton: 'Submit',
     editButton: 'Edit',
-    recipe: 'Recipe', // Ajouté ici pour maintenir la cohérence
+    recipe: 'Recipe', 
   },
   fr: {
     welcome: 'Bienvenue au Restaurant Simplonien',
