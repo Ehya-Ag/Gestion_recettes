@@ -1,3 +1,7 @@
+<<<<<<< Updated upstream
+=======
+// src/i18n.js
+>>>>>>> Stashed changes
 import { createI18n } from 'vue-i18n';
 
 // Messages de traduction
@@ -26,6 +30,7 @@ const messages = {
     recipeTitle: 'Title',
     recipeIngredients: 'Ingredients',
     recipeType: 'Recipe Type',
+<<<<<<< Updated upstream
     categoryList: "Category List",
     addCategory: "Add Category",
     id: "ID",
@@ -37,6 +42,17 @@ const messages = {
     AddCategory: "Add Category",
     name: "Name",
     add: "Add",
+=======
+    categoryList: 'Category List',
+    categoryType: 'Category Type',
+    addCategory: 'Add Category',
+    id: 'ID',
+    actions: 'Actions',
+    noCategories: 'No categories available',
+    CategoryList: 'Category List',
+    AddCategory: 'Add Category',
+    add: 'Add',
+>>>>>>> Stashed changes
     typeOptions: {
       appetizer: 'Appetizer',
       dish: 'Dish',
@@ -70,6 +86,7 @@ const messages = {
     recipeTitle: 'Titre',
     recipeIngredients: 'Ingrédients',
     recipeType: 'Type de recette',
+<<<<<<< Updated upstream
     categoryList: "Liste des catégories",
     addCategory: "Ajouter une catégorie",
     id: "ID",
@@ -81,6 +98,17 @@ const messages = {
     add: "Ajouter",
     CategoryList: "Liste des Catégories",
     AddCategory: "Ajouter une Catégorie",
+=======
+    categoryType: 'Type de categorie',
+    categoryList: 'Liste des catégories',
+    addCategory: 'Ajouter une catégorie',
+    id: 'ID',
+    actions: 'Actions',
+    noCategories: 'Aucune catégorie disponible',
+    CategoryList: 'Liste des Catégories',
+    AddCategory: 'Ajouter une Catégorie',
+    add: 'Ajouter',
+>>>>>>> Stashed changes
     typeOptions: {
       appetizer: 'Entrée',
       dish: 'Plat',
@@ -88,6 +116,7 @@ const messages = {
     },
     submitButton: 'Soumettre',
     editButton: 'Modifier',
+<<<<<<< Updated upstream
     recipe: 'recette', 
   },
 };
@@ -96,6 +125,16 @@ const i18n = createI18n({
   locale: 'en',
   fallbackLocale: 'fr',
   messages,
+=======
+    recipe: 'recette'
+  }
+};
+
+const i18n = createI18n({
+  locale: 'en', // langue par défaut
+  fallbackLocale: 'fr', // langue de secours
+  messages, // les messages de traduction
+>>>>>>> Stashed changes
 });
 
 export default i18n;

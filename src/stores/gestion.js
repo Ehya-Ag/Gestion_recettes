@@ -41,7 +41,6 @@ export const useCategoryStore = defineStore('category', () => {
 
   let nextId = 4; // ID pour la prochaine catégorie à ajouter
 
-  // Récupérer toutes les catégories
   const getCategories = () => {
     return categories.value;
   };

@@ -6,8 +6,10 @@
   <div class="background-container py-5">
     <div class="container">
       <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="text-primary">{{ $t('categoryList') }}</h1>
-        <router-link to="/ajout-Categorie" class="btn btn-primary">{{ $t('addCategory') }}</router-link>
+        <h1 class="text-primary">{{ $t('CategoryList') }}</h1>
+        <router-link to="/ajout-Categorie" class="btn btn-primary">{{
+          $t('AddCategory')
+        }}</router-link>
       </div>
       <div v-if="categories.length">
         <table class="table table-striped table-bordered table-hover">
@@ -50,17 +52,27 @@
   </div>
 </template>
 
-
 <script setup>
-import { ref, computed, onMounted } from 'vue';
-import { useCategoryStore } from '../stores/gestion';
+import { onMounted } from 'vue'
+import { useCategoryStore } from '../stores/gestion'
 
-const categoryStore = useCategoryStore();
-const categories = computed(() => categoryStore.getCategories());
+const storeC = useCategoryStore()
+const categories = storeC.categories
 
-onMounted(() => {
-  // Vous pouvez ajouter ici une méthode pour charger les catégories depuis une API si nécessaire.
-});
+const confirmDelete = async (id) => {
+  if (confirm('Are you sure you want to delete this category?')) {
+    await deleteCategory(id)
+  }
+}
+
+const deleteCategory = async (id) => {
+  await storeC.deleteCategory(id)
+  await storeC.loadCategoriesFromApi()
+}
+
+onMounted(async () => {
+  await storeC.loadCategoriesFromApi()
+})
 </script>
 
 <style scoped>

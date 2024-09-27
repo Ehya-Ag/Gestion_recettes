@@ -3,9 +3,10 @@ import HomeView from '../views/HomeView.vue'
 import ListeRecettes from '../components/ListeRecettes.vue'
 import AjoutRecette from '../components/AjoutRecette.vue'
 import DetailsRecette from '../components/DetailRecette.vue'
-import DetailsCategorie from '../components/DetailCatagorie.vue'
-import ListeCategories from '../components/ListeCategories.vue';
+import DetailCategorie from '../components/DetailCategorie.vue'; // Si le fichier a cet orthographe
 import AjoutCategorie from '../components/AjoutCategorie.vue';
+import ListeCategories from '../components/ListeCategories.vue';
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -69,9 +70,9 @@ const router = createRouter({
       props: true
     },
     {
-      path: '/categories/:id',  
-      name: 'DetailsCategorie',
-      component: DetailsCategorie,  
+      path: '/DetailsCategorie/:id',
+      name: 'DetailCategorie',
+      component: DetailCategorie,
     },
     {
       path: '/about',
