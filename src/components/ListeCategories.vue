@@ -6,35 +6,34 @@
   <div class="background-container py-5">
     <div class="container">
       <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="text-primary">{{ $t('categoryList') }}</h1>
-        <router-link to="/ajout-Categorie" class="btn btn-primary">{{
-          $t('addCategory')
-        }}</router-link>
+        <h1 class="text-primary">{{ $t('recipeList') }}</h1>
+        <router-link to="/ajout-recette" class="btn btn-primary">{{ $t('addRecipe') }}</router-link>
       </div>
-      <div v-if="categories.length">
+      <div v-if="recipes.length">
         <table class="table table-striped table-bordered table-hover">
           <thead class="table-dark">
             <tr>
               <th scope="col">{{ $t('id') }}</th>
-              <th scope="col">{{ $t('name') }}</th>
+              <th scope="col">{{ $t('title') }}</th>
+              <th scope="col">{{ $t('ingredients') }}</th>
+              <th scope="col">{{ $t('category') }}</th>
               <th scope="col" class="text-end">{{ $t('actions') }}</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="category in categories" :key="category.id">
-              <td>{{ category.id }}</td>
-              <td>{{ category.nom }}</td>
+            <tr v-for="recipe in recipes" :key="recipe.id">
+              <td>{{ recipe.id }}</td>
+              <td>{{ recipe.titre }}</td>
+              <td>{{ recipe.ingredients }}</td>
+              <td>{{ getCategoryName(recipe.id_categorie) }}</td>
               <td class="text-end">
-                <router-link
-                  :to="`/DetailsCategorie/${category.id}`"
-                  class="btn btn-info btn-sm me-2"
-                >
+                <router-link :to="`/DetailsRecette/${recipe.id}`" class="btn btn-info btn-sm me-2">
                   <i class="fas fa-eye"></i>
                 </router-link>
-                <router-link :to="`/edit/${category.id}`" class="btn btn-warning btn-sm me-2">
+                <router-link :to="`/editRecette/${recipe.id}`" class="btn btn-warning btn-sm me-2">
                   <i class="fas fa-edit"></i>
                 </router-link>
-                <button @click="confirmDelete(category.id)" class="btn btn-danger btn-sm">
+                <button @click="confirmDelete(recipe.id)" class="btn btn-danger btn-sm">
                   <i class="fas fa-trash"></i>
                 </button>
               </td>
@@ -43,32 +42,45 @@
         </table>
       </div>
       <div v-else>
-        <p>{{ $t('noCategories') }}</p>
+        <p>{{ $t('noRecipes') }}</p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
+import { useRecipeStore } from '../stores/gestion'
 import { useCategoryStore } from '../stores/gestion'
 
-const storeC = useCategoryStore()
-const categories = storeC.categories
+const recipeStore = useRecipeStore()
+const categoryStore = useCategoryStore()
+
+const recipes = ref([])
 
 const confirmDelete = async (id) => {
-  if (confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?')) {
-    await deleteCategory(id)
+  if (confirm('Êtes-vous sûr de vouloir supprimer cette recette ?')) {
+    await deleteRecipe(id)
   }
 }
 
-const deleteCategory = async (id) => {
-  await storeC.deleteCategory(id)
-  await storeC.loadCategoriesFromApi()
+const deleteRecipe = async (id) => {
+  await recipeStore.deleteRecipe(id)
+  await loadRecipes()
+}
+
+const getCategoryName = (categoryId) => {
+  const category = categoryStore.categories.find((cat) => cat.id === categoryId)
+  return category ? category.nom : 'Inconnu'
+}
+
+const loadRecipes = async () => {
+  recipes.value = await recipeStore.loadRecipesFromApi() // Récupérez les recettes à partir de l'API
 }
 
 onMounted(async () => {
-  await storeC.loadCategoriesFromApi()
+  await categoryStore.loadCategoriesFromApi() // Charger les catégories
+  await loadRecipes() // Charger les recettes
 })
 </script>
 
@@ -78,8 +90,6 @@ onMounted(async () => {
   background-size: cover;
   background-position: center;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
 }
 
 .table {

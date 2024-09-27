@@ -13,11 +13,11 @@
             <input v-model="recipe.titre" type="text" class="form-control" id="title" required />
           </div>
           <div class="mb-3">
-            <label for="ingredients" class="form-label">{{ $t('recipeIngredients') }}</label>
+            <label for="ingredient" class="form-label">{{ $t('recipeIngredient') }}</label>
             <textarea
-              v-model="recipe.ingredients"
+              v-model="recipe.ingredient"
               class="form-control"
-              id="ingredients"
+              id="ingredient"
               rows="4"
               required
             ></textarea>
@@ -31,12 +31,17 @@
             </select>
           </div>
           <div class="mb-3">
-            <label for="type" class="form-label">{{ $t('categoryType') }}</label>
-            <select v-model="categorie.type" class="form-select" id="type" required>
-              <option value="entrée">{{ $t('typeOptions.appetizer') }}</option>
-              <option value="boisson">{{ $t('typeOptions.drink') }}</option>
-              <option value="dessert">{{ $t('typeOptions.dessert') }}</option>
-              <option value="plat principale">{{ $t('typeOptions.platPrincipale') }}</option>
+            <label for="category" class="form-label">{{ $t('categoryType') }}</label>
+            <select
+              v-model="selectedCategory"
+              @change="updateCategoryId"
+              class="form-select"
+              id="category"
+              required
+            >
+              <option v-for="cat in categories" :key="cat.id" :value="cat.nom">
+                {{ cat.nom }}
+              </option>
             </select>
           </div>
           <button type="submit" class="btn btn-primary">
@@ -49,41 +54,59 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRecipeStore } from '../stores/gestion'
+import { useCategoryStore } from '../stores/gestion'
 import { useRoute, useRouter } from 'vue-router'
 
-const store = useRecipeStore()
+const recipeStore = useRecipeStore()
+const categoryStore = useCategoryStore()
 const router = useRouter()
 const route = useRoute()
 
 const recipe = ref({
   titre: '',
-  ingredients: '',
-  type: 'entrée'
+  ingredient: '', // Utiliser "ingredient" au singulier
+  type: 'entrée',
+  id_categorie: null // ID de la catégorie sélectionnée
 })
-const categorie = ref({
-  nom: ''
-})
+
+const selectedCategory = ref(null)
+const categories = ref([])
 
 const isEditing = !!route.params.id
 if (isEditing) {
-  const existingRecipe = store.recipes.find((r) => r.id === parseInt(route.params.id))
+  const existingRecipe = recipeStore.recipes.find((r) => r.id === parseInt(route.params.id))
   if (existingRecipe) {
     Object.assign(recipe.value, existingRecipe)
+    selectedCategory.value = existingRecipe.categorieNom // Remplir la catégorie existante
+    recipe.value.id_categorie = existingRecipe.id_categorie // Mettre à jour l'ID de la catégorie
   } else {
     router.push('/liste')
   }
 }
 
-const submitRecipe = () => {
+const updateCategoryId = () => {
+  const selectedCat = categories.value.find((cat) => cat.nom === selectedCategory.value)
+  if (selectedCat) {
+    recipe.value.id_categorie = selectedCat.id // Mettre à jour l'ID de la catégorie dans l'objet recette
+  }
+}
+
+const submitRecipe = async () => {
+  console.log('Submitting recipe:', recipe.value) // Debugging
   if (isEditing) {
-    store.updateRecipe(parseInt(route.params.id), recipe.value)
+    await recipeStore.updateRecipe(parseInt(route.params.id), recipe.value)
   } else {
-    store.ajoutRecette({ ...recipe.value, id: Date.now() })
+    await recipeStore.ajoutRecette({ ...recipe.value }) // Vérifiez que l'ingrédient est inclus ici
   }
   router.push('/liste')
 }
+
+onMounted(async () => {
+  await categoryStore.loadCategoriesFromApi()
+  categories.value = categoryStore.categories
+})
 </script>
 
 <style scoped>
