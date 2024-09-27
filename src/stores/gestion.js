@@ -75,7 +75,6 @@ export const useCategoryStore = defineStore('category', () => {
     return categories.value
   }
 
-  // Ajouter une nouvelle catégorie
   const addCategory = (nom) => {
     const newCategory = { id: nextId++, nom }
     categories.value.push(newCategory)
