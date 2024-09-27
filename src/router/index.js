@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import ListeRecettes from '../components/ListeRecettes.vue'
 import AjoutRecette from '../components/AjoutRecette.vue'
 import DetailsRecette from '../components/DetailRecette.vue'
+import DetailsCategorie from '../components/DetailCatagorie.vue'
 import ListeCategories from '../components/ListeCategories.vue';
 import AjoutCategorie from '../components/AjoutCategorie.vue';
 
@@ -45,6 +46,32 @@ const router = createRouter({
       name: 'details',
       component: DetailsRecette,
       props: true
+    },
+    // {
+    //   path: '/about',
+    //   name: 'about',
+    //   component: () => import('../views/AboutView.vue')
+    // }
+    {
+      path: '/liste-categorie',
+      name: 'liste-categorie',
+      component: ListeCategories
+    },
+    {
+      path: '/ajout-categorie',
+      name: 'ajout-categorie',
+      component: AjoutCategorie
+    },
+    {
+      path: '/edit/:id',
+      name: 'edit',
+      component: AjoutCategorie,
+      props: true
+    },
+    {
+      path: '/categories/:id',  
+      name: 'DetailsCategorie',
+      component: DetailsCategorie,  
     },
     {
       path: '/about',
