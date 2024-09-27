@@ -5,12 +5,14 @@ import { ref } from 'vue';
 export const useRecipeStore = defineStore('recipe', () => {
   const recipes = ref([]);
 
+  // Ajouter une nouvelle recette
   const ajoutRecette = (recipe) => {
     const maxId = recipes.value.reduce((max, r) => (r.id > max ? r.id : max), 0);
     const newId = maxId + 1;
     recipes.value.push({ id: newId, ...recipe });
   };
 
+  // Mettre à jour une recette existante
   const updateRecipe = (id, updatedRecipe) => {
     const index = recipes.value.findIndex((r) => r.id === id);
     if (index !== -1) {
@@ -18,6 +20,7 @@ export const useRecipeStore = defineStore('recipe', () => {
     }
   };
 
+  // Supprimer une recette
   const deleteRecipe = (id) => {
     const index = recipes.value.findIndex((r) => r.id === id);
     if (index !== -1) {
@@ -38,15 +41,18 @@ export const useCategoryStore = defineStore('category', () => {
 
   let nextId = 4; // ID pour la prochaine catégorie à ajouter
 
+  // Récupérer toutes les catégories
   const getCategories = () => {
     return categories.value;
   };
 
+  // Ajouter une nouvelle catégorie
   const addCategory = (nom) => {
     const newCategory = { id: nextId++, nom };
     categories.value.push(newCategory);
   };
 
+  // Supprimer une catégorie
   const deleteCategory = (id) => {
     const index = categories.value.findIndex((category) => category.id === id);
     if (index !== -1) {
@@ -54,6 +60,7 @@ export const useCategoryStore = defineStore('category', () => {
     }
   };
 
+  // Mettre à jour une catégorie
   const updateCategory = (id, newNom) => {
     const category = categories.value.find((category) => category.id === id);
     if (category) {

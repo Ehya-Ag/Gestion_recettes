@@ -6,10 +6,10 @@
   <div class="background-container py-5">
     <div class="container">
       <div class="card p-4 shadow-lg">
-        <h2 class="mb-4">{{ $t('addCategory') }}</h2> <!-- Utilisation de la clé de traduction -->
+        <h2 class="mb-4">{{ isEditing ? $t('editCategory') : $t('addCategory') }}</h2>
         <form @submit.prevent="submitCategory">
           <div class="mb-3">
-            <label for="nom" class="form-label">{{ $t('name') }}</label> <!-- Utilisation de la clé de traduction -->
+            <label for="nom" class="form-label">{{ $t('categoryName') }}</label>
             <input 
               v-model="category.nom" 
               type="text" 
@@ -20,7 +20,7 @@
             />
           </div>
           <button type="submit" class="btn btn-primary">
-            {{ $t('add') }} <!-- Utilisation de la clé de traduction -->
+            {{ isEditing ? $t('Edit') : $t('Add') }}
           </button>
         </form>
       </div>
@@ -30,56 +30,64 @@
 
 <script setup>
 import { ref } from 'vue';
-import axios from 'axios';
-import { useRouter } from 'vue-router';
-import { useCategoryStore } from '../stores/gestion'; // Assurez-vous d'importer le store
+import { useCategoryStore } from '../stores/gestion';
+import { useRoute, useRouter } from 'vue-router';
 
+const categoryStore = useCategoryStore();
 const router = useRouter();
-const categoryStore = useCategoryStore(); // Initialisation du store
+const route = useRoute();
+
 const category = ref({ nom: '' });
+const isEditing = !!route.params.id;
+if (isEditing) {
+  const existingCategory = categoryStore.categories.find(
+    (cat) => cat.id === parseInt(route.params.id)
+  );
+  if (existingCategory) {
+    Object.assign(category.value, existingCategory);
+  } else {
+    router.push('/liste-categorie');
+  }
+}
 
 const submitCategory = async () => {
   try {
-    const response = await axios.post('/api/categories', category.value);
-    categoryStore.addCategory(response.data); // Ajoutez la catégorie au store
-    alert('Catégorie ajoutée avec succès !');
-    category.value.nom = '';  // Réinitialisation du formulaire
-    router.push('/ListeCategories'); // Redirection vers la liste des catégories
+    if (isEditing) {
+      await categoryStore.updateCategory(parseInt(route.params.id), category.value);
+    } else {
+      await categoryStore.addCategory({ ...category.value, id: Date.now() });
+    }
+    router.push('/liste-categorie');
   } catch (error) {
-    console.error("Erreur lors de l'ajout de la catégorie :", error);
-    alert('Une erreur est survenue lors de l\'ajout de la catégorie.');
+    console.error("Erreur lors de la gestion de la catégorie :", error);
+    alert("Une erreur est survenue lors de la gestion de la catégorie.");
   }
 };
 </script>
-
 
 <style scoped>
 .background-container {
   background-image: url('https://image.shutterstock.com/image-photo/blur-coffee-shop-cafe-restaurant-260nw-364151948.jpg');
   background-size: cover;
   background-position: center;
-  min-height: 100vh; /* Hauteur minimale pour occuper l'écran */
+  min-height: 100vh;
 }
 .card {
-  background-color: #fff; /* Couleur de fond blanche */
-  border-radius: 10px; /* Coins arrondis */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre autour de la carte */
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
-
 .form-label {
-  font-weight: bold; /* Texte en gras pour les étiquettes */
+  font-weight: bold;
 }
-
 .form-control {
-  border-radius: 5px; /* Coins arrondis pour les champs de formulaire */
+  border-radius: 5px;
 }
-
 .btn-primary {
-  background-color: #007bff; /* Couleur de fond du bouton */
-  border: none; /* Pas de bordure */
+  background-color: #007bff;
+  border: none;
 }
-
 .btn-primary:hover {
-  background-color: #0056b3; /* Couleur du bouton au survol */
+  background-color: #0056b3;
 }
 </style>

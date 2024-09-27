@@ -49,7 +49,7 @@
           <!-- Ajout de la gestion des catégories -->
           <li class="nav-item">
             <router-link
-              to="/categories"
+              to="/liste-categorie"
               class="nav-link"
               active-class="active"
             >
