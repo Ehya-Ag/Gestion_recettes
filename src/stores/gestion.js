@@ -65,7 +65,7 @@ export const useCategoryStore = defineStore('category', () => {
 
   const addCategory = async (nom) => {
     try {
-      const response = await axios.post('http://localhost:3000/categories', { nom })
+      const response = await axios.post('http://localhost:3000/categories', nom)
       categories.value.push(response.data)
     } catch (error) {
       console.error("Erreur lors de l'ajout de la catégorie :", error)
@@ -101,6 +101,10 @@ export const useCategoryStore = defineStore('category', () => {
       console.error('Erreur lors de la mise à jour de la catégorie :', error)
     }
   }
+  const getCategoryNameById = async (id) => {
+    const category = categories.find((cat) => cat.id === id)
+    return category ? category.nom : 'Catégorie inconnue'
+  }
 
   return {
     categories,
@@ -108,6 +112,7 @@ export const useCategoryStore = defineStore('category', () => {
     getCategories,
     addCategory,
     deleteCategory,
-    updateCategory
+    updateCategory,
+    getCategoryNameById
   }
 })

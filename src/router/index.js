@@ -3,10 +3,9 @@ import HomeView from '../views/HomeView.vue'
 import ListeRecettes from '../components/ListeRecettes.vue'
 import AjoutRecette from '../components/AjoutRecette.vue'
 import DetailsRecette from '../components/DetailRecette.vue'
-import DetailCategorie from '../components/DetailCategorie.vue'; // Si le fichier a cet orthographe
-import AjoutCategorie from '../components/AjoutCategorie.vue';
-import ListeCategories from '../components/ListeCategories.vue';
-
+import DetailCategorie from '../components/DetailCategorie.vue';
+import ListeCategories from '../components/ListeCategories.vue'
+import AjoutCategorie from '../components/AjoutCategorie.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,12 +13,12 @@ const router = createRouter({
     {
       path: '/categories',
       name: 'ListeCategories',
-      component: ListeCategories,
+      component: ListeCategories
     },
     {
       path: '/ajout-categorie',
       name: 'AjoutCategorie',
-      component: AjoutCategorie,
+      component: AjoutCategorie
     },
     {
       path: '/',
@@ -64,8 +63,8 @@ const router = createRouter({
       component: AjoutCategorie
     },
     {
-      path: '/edit/:id',
-      name: 'edit',
+      path: '/edit-categorie/:id',
+      name: 'edit-categorie',
       component: AjoutCategorie,
       props: true
     },
@@ -80,7 +79,6 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue')
     }
   ]
-  
 })
 
 export default router
