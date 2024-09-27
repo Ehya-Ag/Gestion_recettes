@@ -66,9 +66,9 @@ const route = useRoute()
 
 const recipe = ref({
   titre: '',
-  ingredient: '', // Utiliser "ingredient" au singulier
+  ingredient: '',
   type: 'entrée',
-  id_categorie: null // ID de la catégorie sélectionnée
+  id_categorie: null
 })
 
 const selectedCategory = ref(null)
@@ -79,8 +79,8 @@ if (isEditing) {
   const existingRecipe = recipeStore.recipes.find((r) => r.id === parseInt(route.params.id))
   if (existingRecipe) {
     Object.assign(recipe.value, existingRecipe)
-    selectedCategory.value = existingRecipe.categorieNom // Remplir la catégorie existante
-    recipe.value.id_categorie = existingRecipe.id_categorie // Mettre à jour l'ID de la catégorie
+    selectedCategory.value = existingRecipe.categorieNom
+    recipe.value.id_categorie = existingRecipe.id_categorie
   } else {
     router.push('/liste')
   }
@@ -89,16 +89,16 @@ if (isEditing) {
 const updateCategoryId = () => {
   const selectedCat = categories.value.find((cat) => cat.nom === selectedCategory.value)
   if (selectedCat) {
-    recipe.value.id_categorie = selectedCat.id // Mettre à jour l'ID de la catégorie dans l'objet recette
+    recipe.value.id_categorie = selectedCat.id
   }
 }
 
 const submitRecipe = async () => {
-  console.log('Submitting recipe:', recipe.value) // Debugging
+  console.log('Submitting recipe:', recipe.value)
   if (isEditing) {
     await recipeStore.updateRecipe(parseInt(route.params.id), recipe.value)
   } else {
-    await recipeStore.ajoutRecette({ ...recipe.value }) // Vérifiez que l'ingrédient est inclus ici
+    await recipeStore.ajoutRecette({ ...recipe.value })
   }
   router.push('/liste')
 }
@@ -114,26 +114,26 @@ onMounted(async () => {
   background-image: url('https://image.shutterstock.com/image-photo/blur-coffee-shop-cafe-restaurant-260nw-364151948.jpg');
   background-size: cover;
   background-position: center;
-  min-height: 100vh; /* Hauteur minimale pour occuper l'écran */
+  min-height: 100vh;
 }
 .card {
-  background-color: #fff; /* Couleur de fond blanche */
-  border-radius: 10px; /* Coins arrondis */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre autour de la carte */
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .form-label {
-  font-weight: bold; /* Texte en gras pour les étiquettes */
+  font-weight: bold;
 }
 
 .form-control,
 .form-select {
-  border-radius: 5px; /* Coins arrondis pour les champs de formulaire */
+  border-radius: 5px;
 }
 
 .btn-primary {
-  background-color: #007bff; /* Couleur de fond du bouton */
-  border: none; /* Pas de bordure */
+  background-color: #007bff;
+  border: none;
 }
 
 .btn-primary:hover {

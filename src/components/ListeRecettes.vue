@@ -1,8 +1,4 @@
 <template>
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-  />
   <div class="background-container py-5">
     <div class="container">
       <div class="d-flex justify-content-between align-items-center mb-4">
@@ -15,7 +11,7 @@
             <tr>
               <th scope="col">{{ $t('title') }}</th>
               <th scope="col">{{ $t('type') }}</th>
-              <th scope="col">{{ $t('ingredients') }}</th>
+              <th scope="col">{{ $t('ingredient') }}</th>
               <th scope="col">{{ $t('categorie') }}</th>
               <th scope="col" class="text-end">{{ $t('actions') }}</th>
             </tr>
@@ -24,14 +20,9 @@
             <tr v-for="recipe in recipes" :key="recipe.id">
               <td>{{ recipe.titre }}</td>
               <td>{{ recipe.type }}</td>
-              <td>
-                {{
-                  Array.isArray(recipe.ingredients)
-                    ? recipe.ingredients.join(', ')
-                    : 'Ingrédients non disponibles'
-                }}
-              </td>
-              <td>{{ getCategoryNameById(recipe.categorieId) }}</td>
+              <td>{{ recipe.ingredient || 'Ingrédient non disponible' }}</td>
+              <td>{{ getCategoryName(recipe.id_categorie) }}</td>
+              <!-- Utilisation de id_categorie -->
               <td class="text-end">
                 <button
                   @click="openModal(recipe)"
@@ -55,41 +46,6 @@
       <div v-else>
         <p>{{ $t('noRecipes') }}</p>
       </div>
-      <div
-        class="modal fade"
-        id="recipeModal"
-        tabindex="-1"
-        aria-labelledby="recipeModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="recipeModalLabel">{{ selectedRecipe?.titre }}</h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">
-              <p>
-                <strong>{{ $t('type') }} :</strong> {{ selectedRecipe?.type }}
-              </p>
-              <p>
-                <strong>{{ $t('ingredients') }} :</strong>
-                {{ selectedRecipe?.ingredients.join(', ') }}
-              </p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                {{ $t('close') }}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -98,13 +54,11 @@
 import { ref, onMounted } from 'vue'
 import { useRecipeStore } from '../stores/gestion'
 import { useCategoryStore } from '../stores/gestion'
-
 import { useRouter } from 'vue-router'
 
 const store = useRecipeStore()
 const recipes = store.recipes
 const storeC = useCategoryStore()
-const categories = storeC.categories
 const selectedRecipe = ref(null)
 const router = useRouter()
 
@@ -121,21 +75,20 @@ const confirmDelete = async (id) => {
 const deleteRecipe = async (id) => {
   await store.deleteRecipe(id)
   await store.loadRecipesFromApi()
-  await storeC.loadCategoriesFromApi()
 }
 
 const openModal = (recipe) => {
   selectedRecipe.value = recipe
 }
 
-const getCategoryNameById = (id) => {
-  const category = categories.find((cat) => cat.id === id)
-  return category ? category.nom : 'Catégorie inconnue' // Retourner un message par défaut si non trouvé
+const getCategoryName = (id) => {
+  const category = storeC.categories.find((cat) => cat.id === id)
+  return category ? category.nom : 'Catégorie inconnue'
 }
 
 onMounted(async () => {
   await store.loadRecipesFromApi()
-  await storeC.loadCategoriesFromApi() // Charger les catégories
+  await storeC.loadCategoriesFromApi()
 })
 </script>
 

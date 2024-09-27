@@ -27,41 +27,24 @@
         <ul class="navbar-nav ms-auto">
           <!-- Liens existants -->
           <li class="nav-item">
-            <router-link
-              to="/liste"
-              class="nav-link"
-              active-class="active"
-              aria-current="page"
-            >
+            <router-link to="/liste" class="nav-link" active-class="active" aria-current="page">
               <i class="fas fa-list me-2"></i> {{ $t('RecipeList') }}
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link
-              to="/ajout"
-              class="nav-link"
-              active-class="active"
-            >
+            <router-link to="/ajout" class="nav-link" active-class="active">
               <i class="fas fa-plus me-2"></i> {{ $t('AddRecipe') }}
             </router-link>
           </li>
 
           <!-- Ajout de la gestion des catégories -->
           <li class="nav-item">
-            <router-link
-              to="/liste-categorie"
-              class="nav-link"
-              active-class="active"
-            >
+            <router-link to="/liste-categorie" class="nav-link" active-class="active">
               <i class="fas fa-list-alt me-2"></i> {{ $t('CategoryList') }}
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link
-              to="/ajout-categorie"
-              class="nav-link"
-              active-class="active"
-            >
+            <router-link to="/ajout-categorie" class="nav-link" active-class="active">
               <i class="fas fa-plus-circle me-2"></i> {{ $t('AddCategory') }}
             </router-link>
           </li>
@@ -72,13 +55,13 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
-import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
-const { locale } = useI18n();
+const { locale } = useI18n()
 
 function changeLanguage(event) {
-  locale.value = event.target.value;
+  locale.value = event.target.value
 }
 </script>
 
