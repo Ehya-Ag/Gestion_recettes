@@ -3,10 +3,22 @@ import HomeView from '../views/HomeView.vue'
 import ListeRecettes from '../components/ListeRecettes.vue'
 import AjoutRecette from '../components/AjoutRecette.vue'
 import DetailsRecette from '../components/DetailRecette.vue'
+import ListeCategories from '../components/ListeCategories.vue';
+import AjoutCategorie from '../components/AjoutCategorie.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: '/categories',
+      name: 'ListeCategories',
+      component: ListeCategories,
+    },
+    {
+      path: '/ajout-categorie',
+      name: 'AjoutCategorie',
+      component: AjoutCategorie,
+    },
     {
       path: '/',
       name: 'home',
@@ -40,6 +52,7 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue')
     }
   ]
+  
 })
 
 export default router
