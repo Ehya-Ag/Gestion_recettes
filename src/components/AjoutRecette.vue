@@ -6,7 +6,7 @@
   <div class="background-container py-5">
     <div class="container">
       <div class="card p-4 shadow-lg">
-<h2 class="mb-4">{{ isEditing ? $t('Edit') : $t('Add') }} {{ $t('recipe') }}</h2>
+        <h2 class="mb-4">{{ isEditing ? $t('Edit') : $t('Add') }} {{ $t('recipe') }}</h2>
         <form @submit.prevent="submitRecipe">
           <div class="mb-3">
             <label for="title" class="form-label">{{ $t('recipeTitle') }}</label>
@@ -30,6 +30,15 @@
               <option value="dessert">{{ $t('typeOptions.dessert') }}</option>
             </select>
           </div>
+          <div class="mb-3">
+            <label for="type" class="form-label">{{ $t('categoryType') }}</label>
+            <select v-model="categorie.type" class="form-select" id="type" required>
+              <option value="entrée">{{ $t('typeOptions.appetizer') }}</option>
+              <option value="boisson">{{ $t('typeOptions.drink') }}</option>
+              <option value="dessert">{{ $t('typeOptions.dessert') }}</option>
+              <option value="plat principale">{{ $t('typeOptions.platPrincipale') }}</option>
+            </select>
+          </div>
           <button type="submit" class="btn btn-primary">
             {{ isEditing ? $t('editButton') : $t('submitButton') }}
           </button>
@@ -40,38 +49,41 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRecipeStore } from '../stores/gestion';
-import { useRoute, useRouter } from 'vue-router';
+import { ref } from 'vue'
+import { useRecipeStore } from '../stores/gestion'
+import { useRoute, useRouter } from 'vue-router'
 
-const store = useRecipeStore();
-const router = useRouter();
-const route = useRoute();
+const store = useRecipeStore()
+const router = useRouter()
+const route = useRoute()
 
 const recipe = ref({
   titre: '',
   ingredients: '',
   type: 'entrée'
-});
+})
+const categorie = ref({
+  nom: ''
+})
 
-const isEditing = !!route.params.id;
+const isEditing = !!route.params.id
 if (isEditing) {
-  const existingRecipe = store.recipes.find((r) => r.id === parseInt(route.params.id));
+  const existingRecipe = store.recipes.find((r) => r.id === parseInt(route.params.id))
   if (existingRecipe) {
-    Object.assign(recipe.value, existingRecipe);
+    Object.assign(recipe.value, existingRecipe)
   } else {
-    router.push('/liste');
+    router.push('/liste')
   }
 }
 
 const submitRecipe = () => {
   if (isEditing) {
-    store.updateRecipe(parseInt(route.params.id), recipe.value);
+    store.updateRecipe(parseInt(route.params.id), recipe.value)
   } else {
-    store.ajoutRecette({ ...recipe.value, id: Date.now() });
+    store.ajoutRecette({ ...recipe.value, id: Date.now() })
   }
-  router.push('/liste');
-};
+  router.push('/liste')
+}
 </script>
 
 <style scoped>

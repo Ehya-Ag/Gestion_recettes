@@ -16,6 +16,7 @@
               <th scope="col">{{ $t('title') }}</th>
               <th scope="col">{{ $t('type') }}</th>
               <th scope="col">{{ $t('ingredients') }}</th>
+              <th scope="col">{{ $t('categorie') }}</th>
               <th scope="col" class="text-end">{{ $t('actions') }}</th>
             </tr>
           </thead>
@@ -23,7 +24,14 @@
             <tr v-for="recipe in recipes" :key="recipe.id">
               <td>{{ recipe.titre }}</td>
               <td>{{ recipe.type }}</td>
-              <td>{{ recipe.ingredients }}</td>
+              <td>
+                {{
+                  Array.isArray(recipe.ingredients)
+                    ? recipe.ingredients.join(', ')
+                    : 'Ingrédients non disponibles'
+                }}
+              </td>
+              <td>{{ getCategoryName(recipe.categorieId) }}</td>
               <td class="text-end">
                 <button
                   @click="openModal(recipe)"
@@ -66,8 +74,13 @@
               ></button>
             </div>
             <div class="modal-body">
-              <p><strong>{{ $t('type') }} :</strong> {{ selectedRecipe?.type }}</p>
-              <p><strong>{{ $t('ingredients') }} :</strong> {{ selectedRecipe?.ingredients }}</p>
+              <p>
+                <strong>{{ $t('type') }} :</strong> {{ selectedRecipe?.type }}
+              </p>
+              <p>
+                <strong>{{ $t('ingredients') }} :</strong>
+                {{ selectedRecipe?.ingredients.join(', ') }}
+              </p>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
@@ -82,31 +95,46 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRecipeStore } from '../stores/gestion';
-import { useRouter } from 'vue-router';
+import { ref, onMounted } from 'vue'
+import { useRecipeStore } from '../stores/gestion'
+import { useCategoryStore } from '../stores/gestion'
 
-const store = useRecipeStore();
-const recipes = store.recipes;
-const selectedRecipe = ref(null);
-const router = useRouter();
+import { useRouter } from 'vue-router'
+
+const store = useRecipeStore()
+const recipes = store.recipes
+const storeC = useCategoryStore()
+const categories = storeC.categories
+const selectedRecipe = ref(null)
+const router = useRouter()
 
 const ajouter = () => {
-  router.push('/ajout');
-};
+  router.push('/ajout')
+}
 
 const confirmDelete = (id) => {
   if (confirm('Êtes-vous sûr de vouloir supprimer cette recette ?')) {
-    deleteRecipe(id);
+    deleteRecipe(id)
   }
-};
+}
 
 const deleteRecipe = (id) => {
-  store.deleteRecipe(id);
-};
+  store.deleteRecette(id)
+}
+
 const openModal = (recipe) => {
-  selectedRecipe.value = recipe;
-};
+  selectedRecipe.value = recipe
+}
+
+const getCategoryName = (id) => {
+  const category = categories.find((cat) => cat.id === id)
+  return category ? category.nom : 'Inconnue'
+}
+
+onMounted(async () => {
+  await store.loadRecipesFromApi()
+  await storeC.loadCategoriesFromApi() // Charger les catégories
+})
 </script>
 
 <style scoped>
