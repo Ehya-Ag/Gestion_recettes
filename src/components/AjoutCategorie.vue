@@ -6,21 +6,21 @@
   <div class="background-container py-5">
     <div class="container">
       <div class="card p-4 shadow-lg">
-        <h2 class="mb-4">{{ isEditing ? $t('editCategory') : $t('addCategory') }}</h2>
+        <h2 class="mb-4">{{ isEditing ? $t('Edit') : $t('Add') }} {{ $t('category') }}</h2>
         <form @submit.prevent="submitCategory">
           <div class="mb-3">
             <label for="nom" class="form-label">{{ $t('categoryName') }}</label>
-            <input 
-              v-model="category.nom" 
-              type="text" 
-              class="form-control" 
-              id="nom" 
-              required 
+            <input
+              v-model="category.nom"
+              type="text"
+              class="form-control"
+              id="nom"
+              required
               placeholder="Entrez le nom de la catégorie"
             />
           </div>
           <button type="submit" class="btn btn-primary">
-            {{ isEditing ? $t('Edit') : $t('Add') }}
+            {{ isEditing ? $t('editButton') : $t('submitButton') }}
           </button>
         </form>
       </div>
@@ -29,40 +29,41 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useCategoryStore } from '../stores/gestion';
-import { useRoute, useRouter } from 'vue-router';
+import { ref } from 'vue'
+import { useCategoryStore } from '../stores/gestion'
+import { useRoute, useRouter } from 'vue-router'
 
-const categoryStore = useCategoryStore();
-const router = useRouter();
-const route = useRoute();
+const categoryStore = useCategoryStore()
+const router = useRouter()
+const route = useRoute()
 
-const category = ref({ nom: '' });
-const isEditing = !!route.params.id;
+const category = ref({ nom: '' })
+const isEditing = !!route.params.id
+
 if (isEditing) {
   const existingCategory = categoryStore.categories.find(
     (cat) => cat.id === parseInt(route.params.id)
-  );
+  )
   if (existingCategory) {
-    Object.assign(category.value, existingCategory);
+    Object.assign(category.value, existingCategory)
   } else {
-    router.push('/liste-categorie');
+    router.push('/liste-categorie')
   }
 }
 
 const submitCategory = async () => {
   try {
     if (isEditing) {
-      await categoryStore.updateCategory(parseInt(route.params.id), category.value);
+      await categoryStore.updateCategory(parseInt(route.params.id), category.value)
     } else {
-      await categoryStore.addCategory({ ...category.value, id: Date.now() });
+      await categoryStore.addCategory({ ...category.value })
     }
-    router.push('/liste-categorie');
+    router.push('/liste-categorie')
   } catch (error) {
-    console.error("Erreur lors de la gestion de la catégorie :", error);
-    alert("Une erreur est survenue lors de la gestion de la catégorie.");
+    console.error('Erreur lors de la gestion de la catégorie :', error)
+    alert('Une erreur est survenue lors de la gestion de la catégorie.')
   }
-};
+}
 </script>
 
 <style scoped>

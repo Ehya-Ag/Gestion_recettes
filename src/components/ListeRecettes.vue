@@ -31,7 +31,7 @@
                     : 'Ingrédients non disponibles'
                 }}
               </td>
-              <td>{{ getCategoryName(recipe.categorieId) }}</td>
+              <td>{{ getCategoryNameById(recipe.categorieId) }}</td>
               <td class="text-end">
                 <button
                   @click="openModal(recipe)"
@@ -112,23 +112,25 @@ const ajouter = () => {
   router.push('/ajout')
 }
 
-const confirmDelete = (id) => {
+const confirmDelete = async (id) => {
   if (confirm('Êtes-vous sûr de vouloir supprimer cette recette ?')) {
-    deleteRecipe(id)
+    await deleteRecipe(id)
   }
 }
 
-const deleteRecipe = (id) => {
-  store.deleteRecette(id)
+const deleteRecipe = async (id) => {
+  await store.deleteRecipe(id)
+  await store.loadRecipesFromApi()
+  await storeC.loadCategoriesFromApi()
 }
 
 const openModal = (recipe) => {
   selectedRecipe.value = recipe
 }
 
-const getCategoryName = (id) => {
+const getCategoryNameById = (id) => {
   const category = categories.find((cat) => cat.id === id)
-  return category ? category.nom : 'Inconnue'
+  return category ? category.nom : 'Catégorie inconnue' // Retourner un message par défaut si non trouvé
 }
 
 onMounted(async () => {
