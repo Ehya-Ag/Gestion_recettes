@@ -1,23 +1,15 @@
 <template>
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-  />
   <div class="background-container py-5">
     <div class="container">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="text-primary text-center mb-5">{{ $t('RecipeList') }}</h1>
         <button @click="ajouter" class="btn btn-primary">{{ $t('AddRecipe') }}</button>
       </div>
-      <div v-if="recipes.length">
-        <div v-for="category in uniqueCategories" :key="category.id" class="mb-5">
+      <div v-if="categories.length">
+        <div v-for="category in categories" :key="category.id" class="mb-5">
           <h2 class="text-secondary display-5 text-center mb-4">{{ category.nom }}</h2>
           <div class="row">
-            <div
-              v-for="recipe in filteredRecipes(category.id)"
-              :key="recipe.id"
-              class="col-md-4 mb-4"
-            >
+            <div v-for="recipe in category.recettes" :key="recipe.id" class="col-md-4 mb-4">
               <div class="card shadow-lg border-light" style="height: 100%">
                 <div class="card-body">
                   <h5 class="card-title fs-4">{{ recipe.titre }}</h5>
@@ -102,6 +94,7 @@ import { useRouter } from 'vue-router'
 
 const store = useRecipeStore()
 const recipes = store.recipes
+const categories = computed(() => store.categories)
 const storeC = useCategoryStore()
 const selectedRecipe = ref(null)
 const router = useRouter()
@@ -118,7 +111,7 @@ const confirmDelete = async (id) => {
 
 const deleteRecipe = async (id) => {
   await store.deleteRecipe(id)
-  await store.loadRecipesFromApi()
+  // await store.loadRecipesFromApi()
 }
 
 const openModal = (recipe) => {
@@ -130,17 +123,8 @@ const getCategoryName = (id) => {
   return category ? category.nom : 'Catégorie inconnue'
 }
 
-const uniqueCategories = computed(() => {
-  return storeC.categories || []
-})
-
-const filteredRecipes = (categoryId) => {
-  return recipes.filter((recipe) => recipe.id_categorie === categoryId)
-}
-
 onMounted(async () => {
-  await store.loadRecipesFromApi()
-  await storeC.loadCategoriesFromApi()
+  await store.loadRecipesAndGroupeByCategory()
 })
 </script>
 

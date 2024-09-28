@@ -5,20 +5,31 @@ import axios from 'axios'
 // Store pour les recettes
 export const useRecipeStore = defineStore('recipe', () => {
   const recipes = ref([])
-
-  const loadRecipesFromApi = async () => {
-    try {
-      const response = await axios.get('http://localhost:3000/recettes/')
-      recipes.value = response.data
-    } catch (error) {
-      console.error('Erreur lors du chargement des recettes :', error)
-    }
+  const categories = ref([])
+  const loadRecipesAndGroupeByCategory = async () => {
+    axios
+      .all([
+        axios.get('http://localhost:3000/recettes'),
+        axios.get('http://localhost:3000/categories')
+      ])
+      .then(
+        axios.spread((resp1, resp2) => {
+          const recettes = resp1.data
+          const cats = resp2.data
+          for (let i = 0; i < cats.length; i++) {
+            const categorieRecettes = recettes.filter((r) => r.id_categorie === cats[i].id)
+            console.log(categorieRecettes)
+            cats[i].recettes = categorieRecettes
+          }
+          categories.value = cats
+          console.log(categories.value)
+        })
+      )
   }
-
   const ajoutRecette = async (recipe) => {
     try {
-      const response = await axios.post('http://localhost:3000/recettes', recipe)
-      recipes.value.push(response.data)
+      await axios.post('http://localhost:3000/recettes', recipe)
+      await loadRecipesAndGroupeByCategory()
     } catch (error) {
       console.error("Erreur lors de l'ajout de la recette :", error)
     }
@@ -28,6 +39,7 @@ export const useRecipeStore = defineStore('recipe', () => {
     try {
       await axios.put(`http://localhost:3000/recettes/${id}`, updatedRecipe)
       const index = recipes.value.findIndex((r) => r.id === id)
+      console.log('index')
       if (index !== -1) {
         recipes.value[index] = { ...recipes.value[index], ...updatedRecipe }
       }
@@ -39,11 +51,19 @@ export const useRecipeStore = defineStore('recipe', () => {
   const deleteRecipe = async (id) => {
     try {
       await axios.delete(`http://localhost:3000/recettes/${id}`)
-      await this.loadRecipesFromApi()
+      const resp = await loadRecipesAndGroupeByCategory()
+      console.log(resp)
     } catch (error) {}
   }
 
-  return { recipes, loadRecipesFromApi, ajoutRecette, updateRecipe, deleteRecipe }
+  return {
+    recipes,
+    categories,
+    ajoutRecette,
+    updateRecipe,
+    deleteRecipe,
+    loadRecipesAndGroupeByCategory
+  }
 })
 
 // Store pour les catégories

@@ -39,16 +39,16 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, computed } from 'vue'
 import { useCategoryStore } from '../stores/gestion'
 
 const storeC = useCategoryStore()
-const categories = storeC.categories
+const categories = computed(() => storeC.categories)
 
 const confirmDelete = async (id) => {
   if (confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?')) {
     await deleteCategory(id)
-    await storeC.loadCategoriesFromApi() // Actualiser les catégories après la suppression
+    await storeC.loadCategoriesFromApi()
   }
 }
 
