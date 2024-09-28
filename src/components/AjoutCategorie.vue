@@ -54,10 +54,11 @@ if (isEditing) {
 const submitCategory = async () => {
   try {
     if (isEditing) {
-      await categoryStore.updateCategory(parseInt(route.params.id), category.value)
+      await categoryStore.updateCategory(parseInt(route.params.id), category.value.nom)
     } else {
-      await categoryStore.addCategory({ ...category.value })
+      await categoryStore.addCategory({ nom: category.value.nom })
     }
+    await categoryStore.loadCategoriesFromApi()
     router.push('/liste-categorie')
   } catch (error) {
     console.error('Erreur lors de la gestion de la catégorie :', error)

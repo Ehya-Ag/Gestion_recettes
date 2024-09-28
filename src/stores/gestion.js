@@ -38,7 +38,7 @@ export const useRecipeStore = defineStore('recipe', () => {
 
   const deleteRecipe = async (id) => {
     try {
-      await axios.delete(`http://localhost:3005/api/recipes/${id}`)
+      await axios.delete(`http://localhost:3000/recettes/${id}`)
       await this.loadRecipesFromApi()
     } catch (error) {}
   }
@@ -72,17 +72,6 @@ export const useCategoryStore = defineStore('category', () => {
     }
   }
 
-  // const deleteCategory = async (id) => {
-  //   try {
-  //     await axios.delete(`http://localhost:3000/categories/${id}`)
-  //     const index = categories.value.findIndex((category) => category.id === id)
-  //     if (index !== -1) {
-  //       categories.value.splice(index, 1)
-  //     }
-  //   } catch (error) {
-  //     console.error('Erreur lors de la suppression de la catégorie :', error)
-  //   }
-  // }
   const deleteCategory = async (id) => {
     try {
       await axios.delete(`http://localhost:3000/categorie/${id}`)
@@ -101,8 +90,8 @@ export const useCategoryStore = defineStore('category', () => {
       console.error('Erreur lors de la mise à jour de la catégorie :', error)
     }
   }
-  const getCategoryNameById = async (id) => {
-    const category = categories.find((cat) => cat.id === id)
+  const getCategoryNameById = (id) => {
+    const category = categories.value.find((cat) => cat.id === id)
     return category ? category.nom : 'Catégorie inconnue'
   }
 

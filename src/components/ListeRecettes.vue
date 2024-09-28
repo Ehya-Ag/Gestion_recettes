@@ -1,57 +1,101 @@
 <template>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  />
   <div class="background-container py-5">
     <div class="container">
       <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="text-primary">{{ $t('RecipeList') }}</h1>
+        <h1 class="text-primary text-center mb-5">{{ $t('RecipeList') }}</h1>
         <button @click="ajouter" class="btn btn-primary">{{ $t('AddRecipe') }}</button>
       </div>
       <div v-if="recipes.length">
-        <table class="table table-striped table-bordered table-hover">
-          <thead class="table-dark">
-            <tr>
-              <th scope="col">{{ $t('title') }}</th>
-              <th scope="col">{{ $t('type') }}</th>
-              <th scope="col">{{ $t('ingredient') }}</th>
-              <th scope="col">{{ $t('categorie') }}</th>
-              <th scope="col" class="text-end">{{ $t('actions') }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="recipe in recipes" :key="recipe.id">
-              <td>{{ recipe.titre }}</td>
-              <td>{{ recipe.type }}</td>
-              <td>{{ recipe.ingredient || 'Ingrédient non disponible' }}</td>
-              <td>{{ getCategoryName(recipe.id_categorie) }}</td>
-              <!-- Utilisation de id_categorie -->
-              <td class="text-end">
-                <button
-                  @click="openModal(recipe)"
-                  class="btn btn-info btn-sm me-2"
-                  data-bs-toggle="modal"
-                  data-bs-target="#recipeModal"
-                >
-                  <i class="fas fa-eye"></i>
-                </button>
-                <router-link :to="`/edit/${recipe.id}`" class="btn btn-warning btn-sm me-2">
-                  <i class="fas fa-edit"></i>
-                </router-link>
-                <button @click="confirmDelete(recipe.id)" class="btn btn-danger btn-sm">
-                  <i class="fas fa-trash"></i>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div v-for="category in uniqueCategories" :key="category.id" class="mb-5">
+          <h2 class="text-secondary display-5 text-center mb-4">{{ category.nom }}</h2>
+          <div class="row">
+            <div
+              v-for="recipe in filteredRecipes(category.id)"
+              :key="recipe.id"
+              class="col-md-4 mb-4"
+            >
+              <div class="card shadow-lg border-light" style="height: 100%">
+                <div class="card-body">
+                  <h5 class="card-title fs-4">{{ recipe.titre }}</h5>
+                  <p class="card-text">{{ recipe.ingredient || 'Ingrédient non disponible' }}</p>
+                  <p class="text-muted">{{ recipe.type }}</p>
+                  <div class="d-flex justify-content-between mt-auto">
+                    <button
+                      @click="openModal(recipe)"
+                      class="btn btn-info btn-sm"
+                      data-bs-toggle="modal"
+                      data-bs-target="#recipeModal"
+                    >
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <router-link :to="`/edit/${recipe.id}`" class="btn btn-warning btn-sm">
+                      <i class="fas fa-edit"></i>
+                    </router-link>
+                    <button @click="confirmDelete(recipe.id)" class="btn btn-danger btn-sm">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+
       <div v-else>
         <p>{{ $t('noRecipes') }}</p>
+      </div>
+    </div>
+
+    <!-- Modal for Recipe Details -->
+    <div
+      class="modal fade"
+      id="recipeModal"
+      tabindex="-1"
+      aria-labelledby="recipeModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="recipeModalLabel">{{ selectedRecipe?.titre }}</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>
+              <strong>{{ $t('type') }} :</strong> {{ selectedRecipe?.type }}
+            </p>
+            <p>
+              <strong>{{ $t('ingredient') }} :</strong>
+              {{ selectedRecipe?.ingredient || 'Non disponible' }}
+            </p>
+            <p>
+              <strong>{{ $t('categorie') }} :</strong>
+              {{ getCategoryName(selectedRecipe?.id_categorie) }}
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              {{ $t('close') }}
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRecipeStore } from '../stores/gestion'
 import { useCategoryStore } from '../stores/gestion'
 import { useRouter } from 'vue-router'
@@ -86,6 +130,14 @@ const getCategoryName = (id) => {
   return category ? category.nom : 'Catégorie inconnue'
 }
 
+const uniqueCategories = computed(() => {
+  return storeC.categories || []
+})
+
+const filteredRecipes = (categoryId) => {
+  return recipes.filter((recipe) => recipe.id_categorie === categoryId)
+}
+
 onMounted(async () => {
   await store.loadRecipesFromApi()
   await storeC.loadCategoriesFromApi()
@@ -102,48 +154,30 @@ onMounted(async () => {
   flex-direction: column;
 }
 
-.table {
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.table-striped tbody tr:nth-of-type(odd) {
-  background-color: #f9f9f9;
-}
-
-.table-bordered {
-  border: 2px solid #dee2e6;
-}
-
-.table-hover tbody tr:hover {
-  background-color: #e9ecef;
-}
-
-.table-dark {
-  background-color: #343a40;
-  color: #fff;
-}
-
-.table-dark th {
-  color: #fff;
-}
-
-.table-dark td,
-.table-dark th {
-  border-color: #454d55;
-}
-
-.modal-content {
+.card {
   border-radius: 15px;
+  transition: transform 0.2s;
 }
 
-.modal-header {
-  background-color: #007bff;
-  color: #fff;
-  border-bottom: 1px solid #dee2e6;
+.card:hover {
+  transform: scale(1.05);
 }
 
-.modal-footer {
-  border-top: 1px solid #dee2e6;
+.card-title {
+  font-weight: bold;
+}
+
+h2.display-5 {
+  font-size: 2.5rem;
+  text-transform: uppercase;
+}
+
+.text-primary {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+.text-secondary {
+  font-size: 2rem;
+  font-weight: bold;
 }
 </style>
