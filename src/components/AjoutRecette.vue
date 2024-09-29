@@ -6,14 +6,13 @@
   <div class="background-container py-5">
     <div class="container">
       <div class="card p-4 shadow-lg">
-        <h2 class="mb-4">{{ isEditing ? $t('Edit') : $t('Add') }} {{ $t('recipe') }}</h2>
-        <form @submit.prevent="submitRecipe">
+        <h2 class="mb-4">{{ isEditing ? $t('edit') : $t('add') }} {{ $t('recipe') }}</h2>        <form @submit.prevent="submitRecipe">
           <div class="mb-3">
-            <label for="title" class="form-label">{{ $t('recipeTitle') }}</label>
+            <label for="title" class="form-label">{{ $t('Title') }}</label>
             <input v-model="recipe.titre" type="text" class="form-control" id="title" required />
           </div>
           <div class="mb-3">
-            <label for="ingredient" class="form-label">{{ $t('recipeIngredient') }}</label>
+            <label for="ingredient" class="form-label">{{ $t('Ingredient') }}</label>
             <textarea
               v-model="recipe.ingredient"
               class="form-control"
@@ -23,7 +22,7 @@
             ></textarea>
           </div>
           <div class="mb-3">
-            <label for="type" class="form-label">{{ $t('recipeType') }}</label>
+            <label for="type" class="form-label">{{ $t('Type') }}</label>
             <select v-model="recipe.type" class="form-select" id="type" required>
               <option value="entrée">{{ $t('typeOptions.appetizer') }}</option>
               <option value="plat">{{ $t('typeOptions.dish') }}</option>
@@ -31,7 +30,7 @@
             </select>
           </div>
           <div class="mb-3">
-            <label for="category" class="form-label">{{ $t('categoryType') }}</label>
+            <label for="category" class="form-label">{{ $t('category') }}</label>
             <select
               v-model="selectedCategory"
               @change="updateCategoryId"

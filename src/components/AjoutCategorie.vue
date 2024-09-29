@@ -9,7 +9,7 @@
         <h2 class="mb-4">{{ isEditing ? $t('Edit') : $t('Add') }} {{ $t('category') }}</h2>
         <form @submit.prevent="submitCategory">
           <div class="mb-3">
-            <label for="nom" class="form-label">{{ $t('categoryName') }}</label>
+            <label for="nom" class="form-label">{{ $t('Name') }}</label>
             <input
               v-model="category.nom"
               type="text"
