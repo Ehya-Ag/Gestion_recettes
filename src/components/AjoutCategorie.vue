@@ -9,7 +9,7 @@
         <h2 class="mb-4">{{ isEditing ? $t('Edit') : $t('Add') }} {{ $t('category') }}</h2>
         <form @submit.prevent="submitCategory">
           <div class="mb-3">
-            <label for="nom" class="form-label">{{ $t('categoryName') }}</label>
+            <label for="nom" class="form-label">{{ $t('Name') }}</label>
             <input
               v-model="category.nom"
               type="text"
@@ -54,10 +54,11 @@ if (isEditing) {
 const submitCategory = async () => {
   try {
     if (isEditing) {
-      await categoryStore.updateCategory(parseInt(route.params.id), category.value)
+      await categoryStore.updateCategory(parseInt(route.params.id), category.value.nom)
     } else {
-      await categoryStore.addCategory({ ...category.value })
+      await categoryStore.addCategory({ nom: category.value.nom })
     }
+    await categoryStore.loadCategoriesFromApi()
     router.push('/liste-categorie')
   } catch (error) {
     console.error('Erreur lors de la gestion de la catégorie :', error)

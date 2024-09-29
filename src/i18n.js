@@ -30,29 +30,35 @@ const messages = {
     categoryType: 'Category Type',
     addCategory: 'Add Category',
     id: 'ID',
-    name: 'Name',
     actions: 'Actions',
     noCategories: 'No categories available',
     ddCategory: 'Add Category',
     CategoryList: 'Category List',
     AddCategory: 'Add Category',
-    name: 'Name',
     add: 'Add',
+    edit: 'Edit',
+    recipe: 'Recipe',
+    recipeIngredients: 'Ingredients', 
+    category: 'Category', 
+    Edit: 'Edit',
+    Add: 'Add',
+    category: 'Category',
+    Name: 'Name',
+    editButton: 'Edit Category',
+    submitButton: 'Submit Category',
     typeOptions: {
       appetizer: 'Appetizer',
       dish: 'Dish',
       dessert: 'Dessert',
-      platPrincipale: 'principal plat',
-      drink: 'drink'
+      platPrincipale: 'Main Dish',
+      drink: 'Drink'
     },
     submitButton: 'Submit',
-    editButton: 'Edit',
-    recipe: 'Recipe'
+    editButton: 'Edit'
   },
   fr: {
     welcome: 'Bienvenue au Restaurant Simplonien',
-    description:
-      'Découvrez une cuisine raffinée et authentique dans un cadre chaleureux et convivial.',
+    description: 'Découvrez une cuisine raffinée et authentique dans un cadre chaleureux et convivial.',
     viewRecipes: 'Voir nos recettes',
     ourChefs: 'Nos Cuisiniers',
     testimonials: 'Témoignages de nos Clients',
@@ -74,28 +80,35 @@ const messages = {
     recipeTitle: 'Titre',
     recipeIngredients: 'Ingrédients',
     recipeType: 'Type de recette',
-    categoryType: 'Type de categorie',
+    categoryType: 'Type de catégorie',
     categoryList: 'Liste des catégories',
     addCategory: 'Ajouter une catégorie',
     id: 'ID',
-    name: 'Nom',
     actions: 'Actions',
     noCategories: 'Aucune catégorie disponible',
-    addCategory: 'Ajouter une catégorie',
-    name: 'Nom',
-    add: 'Ajouter',
+    ddCategory: 'Ajouter une catégorie',
     CategoryList: 'Liste des Catégories',
     AddCategory: 'Ajouter une Catégorie',
+    add: 'Ajouter',
+    edit: 'Modifier',
+    recipe: 'Recette',
+    recipeIngredients: 'Ingrédients', 
+    category: 'Catégorie', 
+    dit: 'Modifier',
+    Add: 'Ajouter',
+    category: 'Catégorie',
+    Name: 'Nom',
+    editButton: 'Modifier la catégorie',
+    submitButton: 'Soumettre la catégorie',
     typeOptions: {
       appetizer: 'Entrée',
       dish: 'Plat',
       dessert: 'Dessert',
-      platPrincipale: 'plat principale',
-      drink: 'boisson'
+      platPrincipale: 'Plat principal',
+      drink: 'Boisson'
     },
     submitButton: 'Soumettre',
-    editButton: 'Modifier',
-    recipe: 'recette'
+    editButton: 'Modifier'
   }
 }
 

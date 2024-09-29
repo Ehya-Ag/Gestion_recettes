@@ -3,7 +3,6 @@ import HomeView from '../views/HomeView.vue'
 import ListeRecettes from '../components/ListeRecettes.vue'
 import AjoutRecette from '../components/AjoutRecette.vue'
 import DetailsRecette from '../components/DetailRecette.vue'
-import DetailCategorie from '../components/DetailCategorie.vue';
 import ListeCategories from '../components/ListeCategories.vue'
 import AjoutCategorie from '../components/AjoutCategorie.vue'
 
@@ -67,11 +66,6 @@ const router = createRouter({
       name: 'edit-categorie',
       component: AjoutCategorie,
       props: true
-    },
-    {
-      path: '/DetailsCategorie/:id',
-      name: 'DetailCategorie',
-      component: DetailCategorie,
     },
     {
       path: '/about',
