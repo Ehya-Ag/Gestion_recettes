@@ -9,8 +9,8 @@ export const useRecipeStore = defineStore('recipe', () => {
   const loadRecipesAndGroupeByCategory = async () => {
     axios
       .all([
-        axios.get('http://localhost:3000/recettes'),
-        axios.get('http://localhost:3000/categories')
+        axios.get('https://api-recette-10ac8e64034c.herokuapp.com/recettes/'),
+        axios.get('https://api-recette-10ac8e64034c.herokuapp.com/categories/')
       ])
       .then(
         axios.spread((resp1, resp2) => {
@@ -28,7 +28,7 @@ export const useRecipeStore = defineStore('recipe', () => {
   }
   const ajoutRecette = async (recipe) => {
     try {
-      await axios.post('http://localhost:3000/recettes', recipe)
+      await axios.post('https://api-recette-10ac8e64034c.herokuapp.com/recettes/', recipe)
       await loadRecipesAndGroupeByCategory()
     } catch (error) {
       console.error("Erreur lors de l'ajout de la recette :", error)
@@ -37,7 +37,10 @@ export const useRecipeStore = defineStore('recipe', () => {
 
   const updateRecipe = async (id, updatedRecipe) => {
     try {
-      await axios.put(`http://localhost:3000/recettes/${id}`, updatedRecipe)
+      await axios.put(
+        `https://api-recette-10ac8e64034c.herokuapp.com/recettes/${id}`,
+        updatedRecipe
+      )
       const index = recipes.value.findIndex((r) => r.id === id)
       console.log('index')
       if (index !== -1) {
@@ -50,7 +53,7 @@ export const useRecipeStore = defineStore('recipe', () => {
 
   const deleteRecipe = async (id) => {
     try {
-      await axios.delete(`http://localhost:3000/recettes/${id}`)
+      await axios.delete(`https://api-recette-10ac8e64034c.herokuapp.com/recettes/${id}`)
       const resp = await loadRecipesAndGroupeByCategory()
       console.log(resp)
     } catch (error) {}
@@ -72,7 +75,7 @@ export const useCategoryStore = defineStore('category', () => {
 
   const loadCategoriesFromApi = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/categories')
+      const response = await axios.get('https://api-recette-10ac8e64034c.herokuapp.com/categories/')
       categories.value = response.data
     } catch (error) {
       console.error('Erreur lors du chargement des catégories :', error)
@@ -85,7 +88,10 @@ export const useCategoryStore = defineStore('category', () => {
 
   const addCategory = async (nom) => {
     try {
-      const response = await axios.post('http://localhost:3000/categories', nom)
+      const response = await axios.post(
+        'https://api-recette-10ac8e64034c.herokuapp.com/categories/',
+        nom
+      )
       categories.value.push(response.data)
     } catch (error) {
       console.error("Erreur lors de l'ajout de la catégorie :", error)
@@ -94,14 +100,17 @@ export const useCategoryStore = defineStore('category', () => {
 
   const deleteCategory = async (id) => {
     try {
-      await axios.delete(`http://localhost:3000/categorie/${id}`)
+      await axios.delete(`https://api-recette-10ac8e64034c.herokuapp.com/categorie/${id}`)
       await this.loadCategoriesFromApi()
     } catch (error) {}
   }
 
   const updateCategory = async (id, newNom) => {
     try {
-      const response = await axios.put(`http://localhost:3000/categorie/${id}`, { nom: newNom })
+      const response = await axios.put(
+        `https://api-recette-10ac8e64034c.herokuapp.com/categorie/${id}`,
+        { nom: newNom }
+      )
       const index = categories.value.findIndex((category) => category.id === id)
       if (index !== -1) {
         categories.value[index] = response.data

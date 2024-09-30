@@ -31,11 +31,11 @@
               <i class="fas fa-list me-2"></i> {{ $t('RecipeList') }}
             </router-link>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <router-link to="/ajout" class="nav-link" active-class="active">
               <i class="fas fa-plus me-2"></i> {{ $t('AddRecipe') }}
             </router-link>
-          </li>
+          </li> -->
 
           <!-- Ajout de la gestion des catégories -->
           <li class="nav-item">
@@ -43,11 +43,11 @@
               <i class="fas fa-list-alt me-2"></i> {{ $t('CategoryList') }}
             </router-link>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <router-link to="/ajout-categorie" class="nav-link" active-class="active">
               <i class="fas fa-plus-circle me-2"></i> {{ $t('AddCategory') }}
             </router-link>
-          </li>
+          </li> -->
         </ul>
       </div>
     </div>
