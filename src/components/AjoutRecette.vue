@@ -6,7 +6,8 @@
   <div class="background-container py-5">
     <div class="container">
       <div class="card p-4 shadow-lg">
-        <h2 class="mb-4">{{ isEditing ? $t('edit') : $t('add') }} {{ $t('recipe') }}</h2>        <form @submit.prevent="submitRecipe">
+        <h2 class="mb-4">{{ isEditing ? $t('edit') : $t('add') }} {{ $t('recipe') }}</h2>
+        <form @submit.prevent="submitRecipe">
           <div class="mb-3">
             <label for="title" class="form-label">{{ $t('Title') }}</label>
             <input v-model="recipe.titre" type="text" class="form-control" id="title" required />
@@ -81,7 +82,7 @@ if (isEditing) {
     selectedCategory.value = existingRecipe.categorieNom
     recipe.value.id_categorie = existingRecipe.id_categorie
   } else {
-    router.push('/liste')
+    // router.push('/liste')
   }
 }
 
